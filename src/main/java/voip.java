@@ -33,12 +33,13 @@ public class voip
         ManagerEvent originateEvent;
 
         originateAction = new OriginateAction();
-        originateAction.setChannel("SIP/1001");
-        originateAction.setContext("default");
-        originateAction.setExten("1000");
-        originateAction.setPriority(new Integer(1));
-        originateAction.setTimeout(new Integer(10000));
+//        originateAction.setChannel("SIP/1001");
+//        originateAction.setContext("default");
+//        originateAction.setExten("1000");
+//        originateAction.setPriority(new Integer(1));
+//        originateAction.setTimeout(new Integer(10000));
         System.out.println(originateAction.getCallerId());
+        System.out.println(originateAction.getExten());
         System.out.println(originateAction.getCallingPres());
 
         // connect to Asterisk and log in
