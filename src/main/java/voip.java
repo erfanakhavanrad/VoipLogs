@@ -1,69 +1,68 @@
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionFactory;
-import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.action.StatusAction;
+import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.ManagerResponse;
-// the source of the page : http://www.scytheofwise.com/asterisk-java-ami/
 import java.io.IOException;
-
-/**
- * @author Aref Azizi
- * @date 10/24/22
- */
-public class voip
+//**
+// * @author Aref Azizi
+// * @date 10/24/22
+// */
+public class voip implements ManagerEventListener
 {
     private ManagerConnection managerConnection;
 
     public voip() throws IOException
     {
-        // this information most be unique
-        ManagerConnectionFactory factory = new ManagerConnectionFactory("localHost", "root", "F@np2ss23");
+        //  اینجا باید اطلاعاتی که برای کاربر در استریسک زده شده نوشته بشه
+        // یوزر پسوورد من و نو یکیه فقط ایپیو عوض کن
+        ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.119.128", "admin", "F@np2ss23");
+
         this.managerConnection = factory.createManagerConnection();
+
     }
 
-    @SuppressWarnings("deprecation")
-    public void run() throws IOException, AuthenticationFailedException, TimeoutException
+    public void run() throws IOException, AuthenticationFailedException,
+            TimeoutException, InterruptedException
     {
-        OriginateAction originateAction;
-        ManagerResponse originateResponse;
-        ManagerEvent originateEvent;
 
-        originateAction = new OriginateAction();
-//        originateAction.setChannel("SIP/1001");
-//        originateAction.setContext("default");
-//        originateAction.setExten("1000");
-//        originateAction.setPriority(new Integer(1));
-//        originateAction.setTimeout(new Integer(10000));
-        System.out.println(originateAction.getCallerId());
-        System.out.println(originateAction.getExten());
-        System.out.println(originateAction.getCallingPres());
+
+        // register for events
+        managerConnection.addEventListener(this);
 
         // connect to Asterisk and log in
         managerConnection.login();
 
-        // send the action we defined and wait 10 seconds for a reply
-        originateResponse = managerConnection.sendAction(originateAction, 10000);
+        // request channel state
+        managerConnection.sendAction(new StatusAction());
 
-        // print the response
-        System.out.println("Response : "+originateResponse.getResponse());
-        CommandAction commandAction = new CommandAction("asterisk -rvvvvv");
-        CommandResponse response = (CommandResponse) managerConnection.sendAction(commandAction);
-        for (String line : response.getResult())
-        {
-            System.out.println( "response of -rvvvvv =============>>>>>" +line);
-        }
-        // disconnect and logoff from asterisk
+        // wait 10 seconds for events to come in
+        Thread.sleep(1000000000);
+
+        // and finally log off and disconnect
         managerConnection.logoff();
     }
 
     public static void main(String[] args) throws Exception
     {
-        voip helloworld;
-        helloworld = new voip();
-        helloworld.run();
+        voip helloManager;
+        helloManager = new voip();
+        helloManager.run();
     }
+
+    public void onManagerEvent(ManagerEvent event)
+    {
+
+//        System.out.println(" MAnager E "+event.getCallerIdName());
+//        System.out.println(" MAnager E "+event);
+//        System.out.println(" MAnager E "+event.getCallerIdNum());
+//        System.out.println(" MAnager E "+event.getConnectedLineName());
+//        System.out.println(" MAnager E "+event.getConnectedLineNum());
+//        System.out.println(" MAnager E "+event.getChannelState());
+//        System.out.println(" MAnager E "+event.getContext());
+        // اینجا event شامل تمام اطلاعاتیه که مورد نیاز ماست
+        System.out.println("User  " + event.getCallerIdName() + "  with number  " + event.getCallerIdNum() + "  calling and connected to operator  " + event.getConnectedLineNum() + "  with name " + event.getConnectedLineName());
+    }
+
+
+
 }
