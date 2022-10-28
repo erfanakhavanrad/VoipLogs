@@ -1,3 +1,5 @@
+package thread;
+
 public class NewThread extends Thread{
     public void run() {
         long startTime = System.currentTimeMillis();

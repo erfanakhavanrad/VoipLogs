@@ -1,6 +1,7 @@
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ManagerEvent;
+import thread.NewThread;
 
 import java.io.IOException;
 
@@ -48,7 +49,7 @@ public class VoipLogger implements ManagerEventListener {
         NewThread newThread1 = new NewThread();
         newThread1.setName("My First Thread");
 //
-//        NewThread newThread2 = new NewThread();
+//        thread.NewThread newThread2 = new thread.NewThread();
 //        newThread2.setName("My Second Thread");
 
         newThread1.start();

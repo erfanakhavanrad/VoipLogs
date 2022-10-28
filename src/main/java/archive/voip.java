@@ -1,6 +1,7 @@
+package archive;
+
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.StatusAction;
-import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import java.io.IOException;
 //**
