@@ -11,8 +11,8 @@ public class VoipLogger implements ManagerEventListener {
     public VoipLogger() throws IOException {
         //  اینجا باید اطلاعاتی که برای کاربر در استریسک زده شده نوشته بشه
         // یوزر پسوورد من و نو یکیه فقط ایپیو عوض کن
-        ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.88.130", "admin", "F@np2ss23");
-//        ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.119.128", "admin", "F@np2ss23");
+  //      ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.88.130", "admin", "F@np2ss23");
+      ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.119.128", "admin", "F@np2ss23");
 
         this.managerConnection = factory.createManagerConnection();
 
@@ -46,7 +46,7 @@ public class VoipLogger implements ManagerEventListener {
 
     public void onManagerEvent(ManagerEvent event) {
 
-        NewThread newThread1 = new NewThread();
+        NewThread newThread1 = new NewThread(event);
         newThread1.setName("My First Thread");
 //
 //        thread.NewThread newThread2 = new thread.NewThread();
